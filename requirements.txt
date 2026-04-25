@@ -1,0 +1,12 @@
+requests
+beautifulsoup4
+pandas
+sqlalchemy
+psycopg2-binary
+streamlit
+playwright
+spacy
+kafka-python
+pytest
+fastapi
+uvicorn
