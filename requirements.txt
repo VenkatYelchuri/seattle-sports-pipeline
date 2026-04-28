@@ -10,3 +10,7 @@ kafka-python
 pytest
 fastapi
 uvicorn
+python-dotenv
+prefect
+pydantic
+pydeck

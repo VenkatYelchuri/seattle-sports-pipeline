@@ -1,41 +1,52 @@
-import pandas as pd
 import time
-from scraper import fetch_html, save_html
+from pathlib import Path
 
-DATA_FILE = "data/processed/centers_with_websites.csv"
+import pandas as pd
+
 from pipeline.logger import get_logger
+from scraper.scraper import fetch_html, save_html
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_FILE = BASE_DIR / "data" / "processed" / "centers_with_websites.csv"
 
 logger = get_logger("scraper")
+
 
 def run():
     df = pd.read_csv(DATA_FILE)
 
-    print(f"🚀 Starting scraping for {len(df)} centers...\n")
+    logger.info(f"Starting scraping for {len(df)} centers")
+    print(f"Starting scraping for {len(df)} centers...\n")
 
-    for index, row in df.iterrows():
-        name = row['Center Name']
-        url = row['Website']
+    success = 0
+    failed = 0
 
-        print(f"🔎 Scraping: {name}")
+    for _, row in df.iterrows():
+        name = row["Center Name"]
+        url = row["Website"]
+
+        print(f"Scraping: {name}")
 
         html = fetch_html(url)
 
         if html:
             save_html(name, html)
+            success += 1
+        else:
+            failed += 1
+            logger.warning(f"Failed to scrape: {name} ({url})")
 
-        # VERY IMPORTANT (rate limiting)
         time.sleep(2)
 
-    print("\n🎉 Scraping complete!")
+    logger.info(f"Scraping complete. Success: {success}, Failed: {failed}")
+    print(f"\nScraping complete. Success: {success}, Failed: {failed}")
 
 
 if __name__ == "__main__":
     logger.info("Starting scraper")
-
     try:
-        # your scraping logic here
+        run()
         logger.info("Scraping completed successfully")
-
-    except Exception as e:
+    except Exception:
         logger.exception("Scraper failed")
         raise
