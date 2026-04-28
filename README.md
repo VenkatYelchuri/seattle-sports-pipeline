@@ -66,6 +66,9 @@ This system turns fragmented web data into a **usable product**:
 
 ## 🧩 Architecture
 
+<img width="1472" height="1440" alt="image" src="https://github.com/user-attachments/assets/a861bf75-5d07-44df-92da-4cd53a219bcd" />
+
+
 ```text
 Seattle Open Data / Center Websites
         ↓
